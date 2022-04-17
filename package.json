@@ -1,0 +1,49 @@
+{
+  "name": "web-clb-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "watch": "node-sass --watch resources/scss/ --output public/css/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/manhhoach/webCLB-test.git"
+  },
+  "author": "manh hoach",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/manhhoach/webCLB-test/issues"
+  },
+  "homepage": "https://github.com/manhhoach/webCLB-test#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^1.29.0",
+    "connect-mongodb-session": "^3.1.0",
+    "connect-multiparty": "^2.2.0",
+    "crypto": "^1.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^5.3.3",
+    "express-session": "^1.17.2",
+    "fb": "^2.0.0",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.13.7",
+    "mongoose-delete": "^0.5.3",
+    "mongoose-sequence": "^5.3.1",
+    "mongoose-slug-generator": "^1.0.4",
+    "multer": "^1.4.3",
+    "share-facebook": "^1.0.1",
+    "slugify": "^1.6.3",
+    "webshot": "^0.18.0"
+  },
+  "devDependencies": {
+    "node-sass": "^6.0.1",
+    "nodemon": "^2.0.12"
+  }
+}

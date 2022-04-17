@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark header-nav">
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">
+          <p class="nav-header">Trang chủ</p><span class="sr-only">(current)</span>
+        </a>
+      </li>
+    </ul>
+
+  
+
+    {{#if (equal isLogin true)}}
+    <div class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle quanly" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <img src="/img/705.jpg" width="50" height="50" alt="" style="border-radius:50px;">
+       Menu
+      </a>
+      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="/posts/create">Thêm bài viết</a>
+        <a class="dropdown-item" href="/admin/posts/stored">Danh sách bài viết</a>
+        <a class="dropdown-item" href="/logout">Đăng xuất</a>
+      </div>
+    </div>
+    {{else}}
+    <a href="\login"><button type="button" class="btn btn-outline-warning btn-control">Đăng nhập</button> </a>
+    {{/if}}
+
+  </div>
+</nav>
