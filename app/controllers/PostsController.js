@@ -78,27 +78,26 @@ class PostsController {
 
   // POST /posts/store
   async store(req, res, next) {
-    let post = {
-      header: req.body.header,
-      content: req.body.content,
-      topic: req.body.topic,
-      isBreakNews: { ...req.body }.hasOwnProperty('isBreakNews')
+    try {
+      let post = {
+        header: req.body.header,
+        content: req.body.content,
+        topic: req.body.topic,
+        isBreakNews: { ...req.body }.hasOwnProperty('isBreakNews')
+      }
+      if (req.file) {
+        let file = req.file;
+        let filename = getFileName(file.filename)
+        let result = await cloudinary.v2.uploader.upload(file.path, { public_id: filename })
+        del(file.path)
+        post.image = `${result.url}`;
+      }
+      await Post.create(post);
+      res.redirect('/');
     }
-    if (req.file) {
-      let file = req.file;
-      let filename = getFileName(file.filename)
-      let result = await cloudinary.v2.uploader.upload(file.path, { public_id: filename })
-      del(file.path)
-      post.image = `${result.url}`;
+    catch (err) {
+      next(e);
     }
-
-    post = new Post(post);
-
-    post.save()
-      .then(() => {
-        res.redirect('/');
-      })
-      .catch(e => next(e));
   }
 
   // GET /posts/:id/edit
@@ -129,7 +128,7 @@ class PostsController {
         del(file.path)
         post.image = `${result.url}`;
       }
-      await Post.updateOne({ _id : ObjectID(req.params.id) }, post)
+      await Post.updateOne({ _id: ObjectID(req.params.id) }, post)
       res.redirect('/');
     }
     catch (err) {
