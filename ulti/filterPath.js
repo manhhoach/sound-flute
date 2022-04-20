@@ -1,7 +1,6 @@
 
 module.exports = (str)=>{
   var arrayPath=[];
-
   while(1)
   {    
     var index = str.indexOf('/img-upload');

@@ -16,7 +16,7 @@ cloudinary.config({
   api_key: process.env.api_key,
   api_secret: process.env.api_secret
 })
-let pathImage;
+let pathImage = [];
 
 class PostsController {
 
@@ -53,7 +53,6 @@ class PostsController {
     try {
       fs.readFile(req.files.upload.path, function (err, data) {
         var newPath = 'public/img-upload/' + req.files.upload.name;
-        //  console.log(newPath);
 
         fs.writeFile(newPath, data, function (err) {
           if (err)
@@ -64,7 +63,7 @@ class PostsController {
             let url = '/img-upload/' + fileName;
             let msg = 'Upload successfully';
             let funcNum = req.query.CKEditorFuncNum;
-            pathImage = url;
+            pathImage.push(fileName);
             res.status(201).send("<script>window.parent.CKEDITOR.tools.callFunction('" + funcNum + "','" + url + "','" + msg + "');</script>");
           }
         });
@@ -81,9 +80,7 @@ class PostsController {
     try {
       let post = {
         header: req.body.header,
-        content: req.body.content,
-        topic: req.body.topic,
-        isBreakNews: { ...req.body }.hasOwnProperty('isBreakNews')
+        content: req.body.content
       }
       if (req.file) {
         let file = req.file;
@@ -92,11 +89,27 @@ class PostsController {
         del(file.path)
         post.image = `${result.url}`;
       }
+
+      if (pathImage.length !== 0) {
+        let path_url = await Promise.all(
+          pathImage.map(async (ele) => {
+            let result = await cloudinary.v2.uploader.upload(`public/img-upload/${ele}`, { public_id: getFileName(ele) })
+            del(`public/img-upload/${ele}`)
+            return result.url;
+          })
+        )  
+        let arrayPath = filterPath(post.content);
+        for(let i=0;i<arrayPath.length;i++)
+        {
+          post.content=post.content.replace(arrayPath[i], path_url[i]);
+        }
+        pathImage = [];
+      }
       await Post.create(post);
       res.redirect('/');
     }
     catch (err) {
-      next(e);
+      next(err);
     }
   }
 
@@ -118,8 +131,6 @@ class PostsController {
       let post = {
         header: req.body.header,
         content: req.body.content,
-        topic: req.body.topic,
-        isBreakNews: { ...req.body }.hasOwnProperty('isBreakNews')
       };
       if (req.file) {
         let file = req.file;
@@ -127,6 +138,21 @@ class PostsController {
         let result = await cloudinary.v2.uploader.upload(file.path, { public_id: filename })
         del(file.path)
         post.image = `${result.url}`;
+      }
+      if (pathImage.length !== 0) {
+        let path_url = await Promise.all(
+          pathImage.map(async (ele) => {
+            let result = await cloudinary.v2.uploader.upload(`public/img-upload/${ele}`, { public_id: getFileName(ele) })
+            del(`public/img-upload/${ele}`)
+            return result.url;
+          })
+        )  
+        let arrayPath = filterPath(post.content);
+        for(let i=0;i<arrayPath.length;i++)
+        {
+          post.content=post.content.replace(arrayPath[i], path_url[i]);
+        }
+        pathImage = [];
       }
       await Post.updateOne({ _id: ObjectID(req.params.id) }, post)
       res.redirect('/');
@@ -139,12 +165,12 @@ class PostsController {
 
   // DELETE /posts/:id/delete
   delete(req, res, next) {
-    var arrayPath = [];
+   // var arrayPath = [];
     Post.findById(req.params.id)
       .then(post => {
-        arrayPath = filterPath(post.content);
-        arrayPath.push(post.image);
-        deleteFile(arrayPath);
+        // arrayPath = filterPath(post.content);
+        // arrayPath.push(post.image);
+        // deleteFile(arrayPath);
         return Post.deleteOne({ _id: ObjectID(req.params.id) })
       })
       .then(() => res.redirect('back'))
