@@ -16,7 +16,7 @@ cloudinary.config({
   api_key: process.env.api_key,
   api_secret: process.env.api_secret
 })
-let pathImage = [];
+
 
 class PostsController {
 
@@ -49,25 +49,33 @@ class PostsController {
   }
 
   //POST /posts/upload image
-  upload(req, res, next) {
+  async upload(req, res, next) {
     try {
-      fs.readFile(req.files.upload.path, function (err, data) {
-        var newPath = 'public/img-upload/' + req.files.upload.name;
+      let result = await cloudinary.v2.uploader.upload(req.files.upload.path, { public_id: getFileName(req.files.upload.name) })
+      let msg = 'Upload successfully';
+      let funcNum = req.query.CKEditorFuncNum;
+      del(req.files.upload.path)
+      res.status(201).send("<script>window.parent.CKEDITOR.tools.callFunction('" + funcNum + "','" + result.url + "','" + msg + "');</script>");
+      // fs.readFile(req.files.upload.path, function (err, data) {
+      //   var newPath = 'public/img-upload/' + req.files.upload.name;
 
-        fs.writeFile(newPath, data, function (err) {
-          if (err)
-            console.log({ err: err });
-          else {
-            // console.log(req.files.upload.originalFilename);
-            let fileName = req.files.upload.name;
-            let url = '/img-upload/' + fileName;
-            let msg = 'Upload successfully';
-            let funcNum = req.query.CKEditorFuncNum;
-            pathImage.push(fileName);
-            res.status(201).send("<script>window.parent.CKEDITOR.tools.callFunction('" + funcNum + "','" + url + "','" + msg + "');</script>");
-          }
-        });
-      });
+      //   fs.writeFile(newPath, data,async function (err) {
+      //     if (err)
+      //       console.log({ err: err });
+      //     else {
+      //       // console.log(req.files.upload.originalFilename);
+      //       let fileName = req.files.upload.name;
+      //       let url = '/img-upload/' + fileName;
+      //       let msg = 'Upload successfully';
+      //       let funcNum = req.query.CKEditorFuncNum;
+      //       pathImage.push(fileName);
+
+      //       let result = await cloudinary.v2.uploader.upload(newPath, { public_id: getFileName(fileName) })
+      //       del(newPath)
+      //       res.status(201).send("<script>window.parent.CKEDITOR.tools.callFunction('" + funcNum + "','" + result.url + "','" + msg + "');</script>");
+      //     }
+      //   });
+      // });
 
     } catch (error) {
       console.log(error.message);
@@ -87,24 +95,9 @@ class PostsController {
         let filename = getFileName(file.filename)
         let result = await cloudinary.v2.uploader.upload(file.path, { public_id: filename })
         del(file.path)
-        post.image = `${result.url}`;
+        post.image = result.url;
       }
 
-      if (pathImage.length !== 0) {
-        let path_url = await Promise.all(
-          pathImage.map(async (ele) => {
-            let result = await cloudinary.v2.uploader.upload(`public/img-upload/${ele}`, { public_id: getFileName(ele) })
-            del(`public/img-upload/${ele}`)
-            return result.url;
-          })
-        )  
-        let arrayPath = filterPath(post.content);
-        for(let i=0;i<arrayPath.length;i++)
-        {
-          post.content=post.content.replace(arrayPath[i], path_url[i]);
-        }
-        pathImage = [];
-      }
       await Post.create(post);
       res.redirect('/');
     }
@@ -137,22 +130,7 @@ class PostsController {
         let filename = getFileName(file.filename)
         let result = await cloudinary.v2.uploader.upload(file.path, { public_id: filename })
         del(file.path)
-        post.image = `${result.url}`;
-      }
-      if (pathImage.length !== 0) {
-        let path_url = await Promise.all(
-          pathImage.map(async (ele) => {
-            let result = await cloudinary.v2.uploader.upload(`public/img-upload/${ele}`, { public_id: getFileName(ele) })
-            del(`public/img-upload/${ele}`)
-            return result.url;
-          })
-        )  
-        let arrayPath = filterPath(post.content);
-        for(let i=0;i<arrayPath.length;i++)
-        {
-          post.content=post.content.replace(arrayPath[i], path_url[i]);
-        }
-        pathImage = [];
+        post.image = result.url;
       }
       await Post.updateOne({ _id: ObjectID(req.params.id) }, post)
       res.redirect('/');
@@ -165,12 +143,8 @@ class PostsController {
 
   // DELETE /posts/:id/delete
   delete(req, res, next) {
-   // var arrayPath = [];
     Post.findById(req.params.id)
       .then(post => {
-        // arrayPath = filterPath(post.content);
-        // arrayPath.push(post.image);
-        // deleteFile(arrayPath);
         return Post.deleteOne({ _id: ObjectID(req.params.id) })
       })
       .then(() => res.redirect('back'))
