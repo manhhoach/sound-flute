@@ -33,11 +33,11 @@ class PostsController {
           timeCreated: time,
           content: post.content
         }
-        let redirectUri = `https://${req.headers.host}${req.originalUrl}`;
-        let a = share(redirectUri, redirectUri, '297026615602914');
+        let a = `https://www.facebook.com/sharer/sharer.php?u=${req.headers.host}${req.originalUrl}`;
         res.render('posts/show', {
           post: tempPost,
-          a
+          a,
+          name: post.header
         });
       })
       .catch(e => next(e));
@@ -45,7 +45,7 @@ class PostsController {
 
   // GET /posts/create
   create(req, res, next) {
-    res.render('posts/create');
+    res.render('posts/create', {name: 'Tạo bài viết'});
   }
 
   //POST /posts/upload image
@@ -111,7 +111,8 @@ class PostsController {
     Post.findById(req.params.id)
       .then(post => {
         res.render('posts/edit', {
-          post: mongooseToObject(post)
+          post: mongooseToObject(post),
+          name: 'Chỉnh sửa bài viết'
         });
       })
       .catch(e => next(e));

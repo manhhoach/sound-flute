@@ -8,7 +8,7 @@ class LoginController{
     show(req,res,next){
         const error=req.session.error;
         delete req.session.error;
-        res.render('login', {error:error});
+        res.render('login', {name:'Đăng nhập'});
     }
     // POST 
     async auth(req, res, next){

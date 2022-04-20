@@ -10,7 +10,8 @@ class AdminController {
             .then(posts => {
                 posts.sort((a, b) => a.createdAt > b.createdAt ? -1 : 1)
                 res.render('admin/stored-posts', {
-                    posts: multiMongooseToObject(posts)
+                    posts: multiMongooseToObject(posts),
+                    name:'Quản lý bài viết'
                 })
             })
             .catch(error => next(error))

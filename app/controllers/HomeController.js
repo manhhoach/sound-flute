@@ -12,7 +12,8 @@ class HomeController {
     Post.find(query).sort({ createdAt: 'desc'})
       .then(posts => {
         res.render('home', {
-          posts: multiMongooseToObject(posts)
+          posts: multiMongooseToObject(posts),
+          name: 'Bài viết'
         });
 
       })
