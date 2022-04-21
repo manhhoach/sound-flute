@@ -33,7 +33,8 @@ class PostsController {
           timeCreated: time,
           content: post.content
         }
-        let a = `https://www.facebook.com/sharer/sharer.php?u=${req.headers.host}${req.originalUrl}`;
+        //let a = `https://www.facebook.com/sharer/sharer.php?u=${req.headers.host}${req.originalUrl}`;
+        let a=`https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u=${req.protocol}://${req.headers.host}${req.originalUrl}&display=popup&ref=plugin&src=share_button`
         res.render('posts/show', {
           post: tempPost,
           a,
