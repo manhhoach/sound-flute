@@ -33,7 +33,8 @@ class PostsController {
           url:`${req.protocol}://${req.headers.host}${req.originalUrl}`, 
           title: tempPost.header,
           image: tempPost.image,
-          url_fb: `https://www.facebook.com/sharer/sharer.php?u=${req.protocol}://${req.headers.host}${req.originalUrl}`
+          url_fb: `https://www.facebook.com/sharer/sharer.php?u=${req.protocol}://${req.headers.host}${req.originalUrl}`,
+          description: ''
         }
         res.render('posts/show', {
           post: tempPost,
