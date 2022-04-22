@@ -13,7 +13,7 @@ class HomeController {
       .then(posts => {
         res.render('home', {
           posts: multiMongooseToObject(posts),
-          name: 'Bài viết'
+          name: 'Cảm âm sáo trúc'
         });
 
       })

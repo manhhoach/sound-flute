@@ -5,6 +5,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta property="og:image" content={{a.image}} />
+    <meta property="og:url" content={{a.url}} />
+    <meta property="og:title" content={{a.title}} />
+
+
+
     <title>{{name}}</title>
     <link rel="icon" type="image/png" href="/img/download.png">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -14,12 +21,11 @@
 
 <body>
 
-
     {{>header}}
-     <br>
-     <br>
-     <br><br>
-    <div class="container1">  
+    <br>
+    <br>
+    <br><br>
+    <div class="container1">
         {{{body}}}
     </div>
     <br><br>

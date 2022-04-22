@@ -1,10 +1,7 @@
 const Post = require('../models/Post');
 const { mongooseToObject } = require('../../ulti/mongoose');
-const fs = require('fs');
-const filterPath = require('../../ulti/filterPath')
-const deleteFile = require('../../ulti/deleteFile')
+
 const del = require('./../../ulti/del')
-const share = require('./../../ulti/shareFb');
 const cloudinary = require('cloudinary');
 var ObjectID = require('mongodb').ObjectID;
 const getFileName = (filename) => {
@@ -16,6 +13,7 @@ cloudinary.config({
   api_key: process.env.api_key,
   api_secret: process.env.api_secret
 })
+const shareFacebook=require('share-facebook')
 
 
 class PostsController {
@@ -28,13 +26,18 @@ class PostsController {
         var time = post.createdAt.toString();
         time = time.slice(0, 24);
 
-        var tempPost = {
-          header: post.header,
-          timeCreated: time,
-          content: post.content
+        var tempPost = mongooseToObject(post);
+        tempPost.time=time;
+
+        let a={
+          url:`${req.protocol}://${req.headers.host}${req.originalUrl}`, 
+          title: post.header,
+          image: post.image,
+          url_fb: `https://www.facebook.com/sharer/sharer.php?u=${req.protocol}://sound-flute.herokuapp.com${req.originalUrl}`
         }
+        // console.log(a)
         //let a = `https://www.facebook.com/sharer/sharer.php?u=${req.headers.host}${req.originalUrl}`;
-        let a=`https://www.facebook.com/sharer/sharer.php?kid_directed_site=0&sdk=joey&u=${req.protocol}://${req.headers.host}${req.originalUrl}&display=popup&ref=plugin&src=share_button`
+        //let a=
         res.render('posts/show', {
           post: tempPost,
           a,

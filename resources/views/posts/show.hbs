@@ -1,5 +1,11 @@
+
 <div class="container">
-      <a href={{a}} target="_blank">Share on facebook</a>
+      <a href={{a.url_fb}} target="_blank">
+            Share on facebook
+
+      </a>
+
+
       <br>
       <div class="text-header">
             <h1>{{post.header}}</h1>
@@ -13,22 +19,22 @@
       <hr>
 
       <div class="content lbl">
-          <div class="content-box"></div>
-          <div hidden class="temp-content">
-            {{post.content}}
-          </div>
+            <div class="content-box"></div>
+            <div hidden class="temp-content">
+                  {{post.content}}
+            </div>
       </div>
-     
+
 
 </div>
 
 <script>
-      document.addEventListener("DOMContentLoaded",function(){
+      document.addEventListener("DOMContentLoaded", function () {
 
-       var tempContent = document.querySelector('.temp-content'); 
-       var contentBox=document.querySelector(".content-box");
-       var content= document.querySelector('.content');
-       contentBox.innerHTML=tempContent.textContent;
-      // content.removeChild(tempContent);
+            var tempContent = document.querySelector('.temp-content');
+            var contentBox = document.querySelector(".content-box");
+            var content = document.querySelector('.content');
+            contentBox.innerHTML = tempContent.textContent;
+            // content.removeChild(tempContent);
       })
 </script>
