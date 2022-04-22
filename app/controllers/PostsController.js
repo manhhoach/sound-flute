@@ -31,13 +31,12 @@ class PostsController {
 
         let a={
           url:`${req.protocol}://${req.headers.host}${req.originalUrl}`, 
-          title: post.header,
-          image: post.image,
-          url_fb: `https://www.facebook.com/sharer/sharer.php?u=${req.protocol}://sound-flute.herokuapp.com${req.originalUrl}`
+          title: tempPost.header,
+          image: tempPost.image,
+          url_fb: `https://www.facebook.com/sharer/sharer.php?u=${req.protocol}://sound-flute.herokuapp.com${req.originalUrl}`, 
+          description:'Cảm âm sáo trúc'
         }
-        // console.log(a)
-        //let a = `https://www.facebook.com/sharer/sharer.php?u=${req.headers.host}${req.originalUrl}`;
-        //let a=
+        console.log(a)
         res.render('posts/show', {
           post: tempPost,
           a,
