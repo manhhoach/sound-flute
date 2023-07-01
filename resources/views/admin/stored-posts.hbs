@@ -1,0 +1,69 @@
+<div class="container">
+  <h3>Bài đăng</h3>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col"> Tiêu đề </th>
+        <th colspan="2">Thời gian tạo </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each posts}}
+      <tr>
+        <td>{{this.header}}</td>
+        <td>{{this.createdAt}}</td>
+        <td>
+          <a href="/posts/{{this._id}}/edit" class="btn btn-link">Sửa</button>
+          <a href="" data-id="{{this._id}}" data-toggle="modal" data-target="#delete-modal"
+            class="btn btn-link">Xóa</button>
+        </td>
+      </tr>
+
+      {{/each}}
+    </tbody>
+  </table>
+
+</div>
+
+{{!-- form confirm delete --}}
+
+<div id="delete-modal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cảnh báo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc muốn xoá vĩnh viễn?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="btn-delete" class="btn btn-primary">Xoá</button>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Huỷ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{!-- delete-form --}}
+<form method="POST" name="delete-form"></form>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var formDelete = document.forms['delete-form'];
+    var ID;
+    $('#delete-modal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget)
+      ID = button.data('id')
+    })
+    var btnDelete = document.getElementById('btn-delete');
+    btnDelete.onclick = function () {
+      formDelete.action = '/posts/' + ID + '?_method=DELETE';
+      formDelete.submit();
+    }
+  })
+</script>

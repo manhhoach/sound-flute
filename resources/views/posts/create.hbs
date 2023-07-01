@@ -1,0 +1,37 @@
+<div class="mt-4 container">
+    <h3 style="font-size:2rem;">Đăng bài</h3>
+    <br>
+    <form method="POST" action="/posts/store" enctype="multipart/form-data">
+
+        <label for="name">Tiêu đề</label>
+        <input type="text" class="form-control" name="header">
+        <br>
+
+        <label for="name">Ảnh đại diện</label>
+        <br>
+        <input type="file" name="image">
+        <br>
+        <br>
+
+        <br>
+        <br>
+        <label for="name">Nội dung</label>
+        <textarea name="content" id="editor"></textarea>
+        <br>
+        <button type="submit" class="btn btn-success">Đăng bài</button>
+    </form>
+</div>
+
+
+<script src="/ckeditor/ckeditor.js"></script>
+
+<script>
+    CKEDITOR.replace('editor', {
+        extraPlugins: 'filebrowser',
+        filebrowserBrowseUrl: '/list',//upload location
+        filebrowserUploadMethod: 'form',
+        filebrowserUploadUrl: '/posts/upload',//route
+        height: '800px',  
+        //fontSize_defaultLabel: '18'
+    });
+</script>

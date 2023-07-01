@@ -1,0 +1,65 @@
+/* header */
+.nav-link,
+.nav-header {
+  margin-right: 15px;
+  font-size: 20px;
+}
+
+.navbar {
+  position: fixed;
+  width: 100%;
+  z-index: 9999999;
+}
+
+
+.container1 {
+  margin-top: 8rem;
+  padding: 2rem 7rem;
+  margin: 0 auto;
+}
+
+/* card   */
+.card-break {
+  height: 18rem;
+  width: 90%;
+}
+
+.card-img-break {
+  width: 100%;
+  height: 11rem;
+  display: block;
+  border: 1px double;
+}
+
+.card-header {
+  text-decoration: none;
+  color: black;
+}
+
+.card-link {
+  text-decoration: none;
+}
+
+
+.card-title {
+  position: relative;
+  top: 2rem;
+  left: 1rem;
+  text-align: left;
+  font-size: 1rem;
+  color: rgb(112, 226, 131);
+}
+
+
+.quanly{
+  margin-right: 4rem;
+}
+
+.time {
+  float: right;
+  display: block;
+}
+
+.btn-control {
+  margin-right: 1rem;
+}

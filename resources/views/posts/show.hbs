@@ -1,0 +1,36 @@
+
+<div class="container">
+      <a href={{chord.url_fb}} target="_blank">
+            Share on facebook
+      </a>
+
+
+      <br>
+      <div>
+            <h1>{{post.header}}</h1>
+      </div>
+
+      <div class="time">
+            <p>{{post.time}}</p>
+      </div>
+
+      <br>
+      <hr>
+
+      <div>
+            <div class="CONTENT_BOX"></div>
+            <div hidden class="CONTENT_HIDDEN">
+                  {{post.content}}
+            </div>
+      </div>
+
+
+</div>
+
+<script>
+      document.addEventListener("DOMContentLoaded", function () {
+            var tempContent = document.querySelector('.CONTENT_HIDDEN');
+            var contentBox = document.querySelector(".CONTENT_BOX");
+            contentBox.innerHTML = tempContent.textContent;
+      })
+</script>

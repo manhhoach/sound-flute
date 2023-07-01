@@ -1,0 +1,50 @@
+<div class="mt-4 container">
+
+    <h3 style="font-size:2rem">Sửa bài viết</h3>
+
+    <form method="POST" action="/posts/update/{{post._id}}?_method=PATCH" enctype="multipart/form-data">
+
+        <label for="name">Tiêu đề</label>
+        <input type="text" class="form-control" name="header" value="{{post.header}}">
+        <br>
+        <label for="name">Ảnh</label>
+        <br>
+        <input type="file" name="image">
+        <br>
+        <br>
+  
+        <br>
+        <br>
+        <label  for="name">Nội dung</label>
+        <textarea name="content" id="editor"></textarea>
+        <br>
+        <button type="submit" class="btn btn-outline-success">Lưu</button>
+
+    </form>
+
+    <div hidden class="CONTENT_HIDDEN">
+        {{post.content}}
+    </div>
+
+</div>
+
+<script src="/ckeditor/ckeditor.js"></script>
+
+<script>
+    var content = document.getElementById('editor');
+    CKEDITOR.replace('editor', {
+        extraPlugins: 'filebrowser',
+        filebrowserBrowseUrl: '/list',//upload location
+        filebrowserUploadMethod: 'form',
+        filebrowserUploadUrl: '/posts/upload',//route
+        height: '700px',
+        fontSize_defaultLabel: '18px' // 18px is font-size default
+    });
+
+    var content = document.querySelector('.CONTENT_HIDDEN').textContent;
+    CKEDITOR.instances.editor.setData(content, function () {
+        this.checkDirty();  // true
+    });
+
+
+</script>

@@ -1,0 +1,17 @@
+version: '3'
+services:
+  sound-flute:
+    environment:
+      DATABASE: ${DATABASE}
+      cloud_name: ${cloud_name}
+      api_key: ${api_key}
+      api_secret: ${api_secret}
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports: 
+      - 5000:5000
+    restart: always
+    volumes:
+      - /app/node_modules
+      - .:/app
