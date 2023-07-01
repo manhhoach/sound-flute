@@ -31,5 +31,6 @@ deploy:
   script:
     - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@54.163.67.48 "
         docker login -u $REGISTRY_USER -p $REGISTRY_PASS &&
-        docker run -d -p 5000:5000 $IMAGE_NAME:$CI_COMMIT_SHA"
+        lsof -i :5000 &&
+        docker run -p 5000:5000 -d $IMAGE_NAME:$CI_COMMIT_SHA"
 
