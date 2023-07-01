@@ -17,18 +17,19 @@ stages:
   before_script:
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
   script:
-    - docker build -t $IMAGE_NAME:v1.0.0-$CI_COMMIT_SHA .
-    - docker push $IMAGE_NAME:v1.0.0-$CI_COMMIT_SHA
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHA
 
 build-dev:
   extends: .build
   only:
-    - main
-# deploy:
-#   stage: deploy
-#   before_script:
-#     - chmod 400 $SSH_KEY
-#   script:
-#     - ssh -o StrictHostKeyChecking=no -i $SSH_KEY root@35.247.145.253 "
-#         docker login -u $REGISTRY_USER -p $REGISTRY_PASS &&
-#         docker run -d -p 5000:5000 $IMAGE_NAME:$CI_COMMIT_SHA"
+    - master
+deploy:
+  stage: deploy
+  before_script:
+    - chmod 400 $SSH_KEY
+  script:
+    - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@54.163.67.48 "
+        docker login -u $REGISTRY_USER -p $REGISTRY_PASS &&
+        docker run -p 5000:5000 -d $IMAGE_NAME:$CI_COMMIT_SHA"
+
