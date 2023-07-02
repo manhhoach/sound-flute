@@ -35,6 +35,5 @@ deploy:
     #     docker run --name sound-flute -p 5000:5000 -d $IMAGE_NAME:$CI_COMMIT_SHA"
     - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@54.163.67.48 "
         docker login -u $REGISTRY_USER -p $REGISTRY_PASS &&
-        docker compose pull &&
-        docker compose up "
+        docker compose up --build"
 
