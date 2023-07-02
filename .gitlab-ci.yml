@@ -17,8 +17,8 @@ stages:
   before_script:
     - docker login -u $REGISTRY_USER -p $REGISTRY_PASS
   script:
-    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
-    - docker push $IMAGE_NAME:$CI_COMMIT_SHA
+    - docker build -t $IMAGE_NAME .
+    - docker push $IMAGE_NAME
 
 build-dev:
   extends: .build
@@ -29,8 +29,12 @@ deploy:
   before_script:
     - chmod 400 $SSH_KEY
   script:
+    # - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@54.163.67.48 "
+    #     docker login -u $REGISTRY_USER -p $REGISTRY_PASS &&
+    #     docker rm -f sound-flute &&
+    #     docker run --name sound-flute -p 5000:5000 -d $IMAGE_NAME:$CI_COMMIT_SHA"
     - ssh -o StrictHostKeyChecking=no -i $SSH_KEY ubuntu@54.163.67.48 "
         docker login -u $REGISTRY_USER -p $REGISTRY_PASS &&
-        docker rm -f sound-flute &&
-        docker run --name sound-flute -p 5000:5000 -d $IMAGE_NAME:$CI_COMMIT_SHA"
+        docker compose pull &&
+        docker compose up "
 
