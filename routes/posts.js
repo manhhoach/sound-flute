@@ -10,18 +10,18 @@ const new_upload = require('./../middleware/upload')
 
 router.get('/create', isAuth, isLogin, postsController.create);
 
-router.get('/:id/edit', isLogin, postsController.edit);
+router.get('/:_id/edit', isLogin, postsController.edit);
 
 router.post('/upload', multipartMiddleware, postsController.upload);
 
 router.post('/store', isAuth, new_upload.single('image'), postsController.store);
 
 
-router.delete('/:id', isAuth, postsController.delete);
+router.delete('/:_id', isAuth, postsController.delete);
 
-router.patch('/update/:id', isAuth, new_upload.single('image'), postsController.update);
+router.patch('/update/:_id', isAuth, new_upload.single('image'), postsController.update);
 
-router.get('/:slug', isLogin, postsController.show);
+router.get('/:_id', isLogin, postsController.show);
 
 
 module.exports = router;

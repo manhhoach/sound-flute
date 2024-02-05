@@ -1,17 +1,12 @@
 const bcrypt = require('bcryptjs');
 const Account = require('../models/Account');
-class RegisterController 
-{
+class RegisterController {
 
-    show(req, res)
-    {
-        const error = req.session.error;
-        delete req.session.error;
+    show(req, res) {
         res.render('register');
     }
 
-    async signup(req, res) 
-    {
+    async signup(req, res) {
         // const { username, password, repassword } = req.body;
         // if (password === repassword)
         // {
@@ -34,14 +29,14 @@ class RegisterController
         //             }).save()
         //         })
         //     })
-           
+
         //     res.redirect('/login');
-           
-            
+
+
         // }
         // else
         //    return res.redirect("/register");
-     
+
     }
 
 }

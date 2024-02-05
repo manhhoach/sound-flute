@@ -33,13 +33,15 @@ const uploadImage = (file) => {
 class PostsController {
 
   show(req, res, next) {
-    Post.findOne({ slug: req.params.slug })
+    Post.findById(req.params._id)
       .then(post => {
-
-        let time = post.createdAt.toString();
-        time = time.slice(0, 24);
+        let isoDate = post.createdAt;
         let tempPost = mongooseToObject(post);
-        tempPost.time = time;
+        const formattedDate = `${isoDate.getDate()}/${isoDate.getMonth() + 1}/${isoDate.getFullYear()}`;
+        const formattedTime = `${isoDate.getHours()}:${isoDate.getMinutes()}:${isoDate.getSeconds()}`;
+
+        const result = `${formattedDate}, ${formattedTime}`;
+        tempPost.time = result;
 
         let chord = {
           url: `${req.protocol}://${req.headers.host}${req.originalUrl}`,
@@ -97,7 +99,7 @@ class PostsController {
   }
 
   edit(req, res, next) {
-    Post.findById(req.params.id)
+    Post.findById(req.params._id)
       .then(post => {
         res.render('posts/edit', {
           post: mongooseToObject(post),
@@ -118,7 +120,7 @@ class PostsController {
         let url = await uploadImage(req.file)
         post.image = url;
       }
-      await Post.updateOne({ _id: ObjectID(req.params.id) }, post)
+      await Post.updateOne({ _id: ObjectID(req.params._id) }, post)
       res.redirect('/');
     }
     catch (err) {
@@ -128,9 +130,9 @@ class PostsController {
 
 
   delete(req, res, next) {
-    Post.findById(req.params.id)
+    Post.findById(req.params._id)
       .then(post => {
-        return Post.deleteOne({ _id: ObjectID(req.params.id) })
+        return Post.deleteOne({ _id: ObjectID(req.params._id) })
       })
       .then(() => res.redirect('back'))
       .catch(e => next(e));

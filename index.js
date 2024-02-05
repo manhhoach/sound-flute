@@ -19,7 +19,7 @@ const port = process.env.PORT || 5000;
 
 
 app.engine('hbs', handlebars({
-  extname: '.hbs',   helpers: require('./helpers/handlebars')
+  extname: '.hbs'
 }));
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'resources/views'));
